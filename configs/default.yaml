@@ -1,0 +1,25 @@
+detection:
+  model: yolov8n.pt
+  conf_threshold: 0.25
+  nms_threshold: 0.45
+  device: cpu
+
+sahi:
+  enabled: true
+  slice_size: 640
+  overlap_ratio: 0.25
+  full_image: true
+
+tracking:
+  track_thresh: 0.45
+  match_thresh: 0.5
+  second_match_thresh: 0.5
+  max_age: 30
+  n_init: 3
+
+cmc:
+  enabled: true
+  num_features: 500
+
+visualization:
+  tail_length: 40
