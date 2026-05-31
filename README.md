@@ -2,11 +2,11 @@
 
 A lightweight drone-optimized pipeline for person detection and multi-object tracking (MOT), built for the VisDrone2019-MOT dataset. The pipeline combines SAHI-style sliced inference on top of YOLOv8n with a custom ByteTrack implementation augmented by Camera Motion Compensation (CMC) to address the specific challenges of aerial surveillance from a moving platform.
 
-Model size: ~6 MB (YOLOv8n). Well within the 300 MB constraint.
+Model size: ~6 MB (YOLOv8n).
 
 ---
 
-## Architecture at a Glance
+## Architecture
 
 | Component | Choice |
 |-----------|--------|
@@ -38,8 +38,6 @@ aerial_guardian/
 ---
 
 ## Setup
-
-Python 3.8 or higher is required.
 
 ```bash
 git clone <your-repo-url>
@@ -245,11 +243,3 @@ INT8 requires a calibration dataset (a few hundred VisDrone frames work well).
 For a production pipeline, NVIDIA DeepStream handles camera input, preprocessing, and inference in a single GPU pipeline, eliminating the Python overhead entirely.
 
 ---
-
-## Key Design Decisions
-
-**Why YOLOv8n and not a larger model?** The 300 MB model size constraint and Jetson deployment target make the nano variant the right choice. SAHI compensates for the reduced capacity by ensuring objects are always at an appropriate scale for the model.
-
-**Why not fine-tune on VisDrone?** The pipeline is intentionally kept as a demonstration of architectural choices rather than a benchmarked system. Fine-tuning YOLOv8n on VisDrone persons (or using a VisDrone-specific checkpoint) would significantly improve detection recall at very small scales and is the natural next step.
-
-**Why partial affine for CMC instead of full homography?** Drone motion at altitude is well approximated by rotation + translation + small scale change. Full homography estimation is less stable with sparse feature sets and more sensitive to dynamic objects (moving persons) contaminating the feature set before RANSAC filtering.
